@@ -1,0 +1,10 @@
+*~
+*.bak
+*.swp
+*.o
+*.aux
+*.log
+*.out
+*goutput*
+report/*.pdf
+
