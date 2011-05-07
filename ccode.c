@@ -3,11 +3,15 @@
   */
 void eliminate(double **A, int N)
 {
-   int i, j, k;
+   int i; // t0
+   int j; // t1
+   int k; // t2
    for (k=0; k < N; k++) {  
-     for (j=k+1; j<N; j++) {
-                            
-       A[k][j] = A[k][j] / A[k][k];
+     
+     double inv = 1/A[k][k];
+     
+     for (j=k+1; j<N; j++) {                            
+       A[k][j] = A[k][j] * inv;
      }
                                    
      A[k][k] = 1.0;
