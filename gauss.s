@@ -49,7 +49,10 @@ eliminate:
 loop_outermost:
 
 		nop
-
+		
+		# We do so a0 is the "line after" the current line
+		add		$a0, $a0, $a1		# a0+=n, this is important for loop to terminate
+		
 		# We want to do $f0 = 1/A[k][k], for that we need:
 		#	1. get the value A[k][k] to f0
 		#	2. $f0 = 1/$f0
@@ -63,9 +66,8 @@ loop_outermost:
 		
 
 		add		$t8, $t8, $t9		# diag+=n+1; where t8 is diag and t9 is n+1
-		addi	$t2, $t2, 1			# k++; so the loop ever finishes
 		
-		bne		$a1, $t2, loop_outermost		# jump back to outermost loop
+		bne		$a0, $t0, loop_outermost		# jump back to outermost loop
 		nop
 
 		nop
