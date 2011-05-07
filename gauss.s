@@ -29,6 +29,8 @@ eliminate:
 		
 
 
+		addi	$t8, $zero, 0		# t8 = Position for diagonal element
+		addi	$t9, $a1,   1		# t9 = number of steps to jump
 		addi	$t2, $zero, 0		# k = 0, beginning of outermost loop
 loop_outermost:
 
@@ -41,8 +43,11 @@ loop_outermost:
 		# We want to do $t3 = 1/A[k][k], for that we need:
 		#	1. get the value A[k][k] to t3
 		#	2. $t3 = 1/$t3
+
+		
 		
 
+		add		$t8, $t8, t9		# diag+=n+1; where t8 is diag and t9 is n+1
 		addi	$t2, $t2, 1			# k++; so the loop ever finishes
 		nop
 		nop
