@@ -40,7 +40,7 @@ eliminate:
 		add		$t0, $a0, $t0
 
 
-		l.s		$f2, constant_one($zero) # Let f2 be a constant 1.0
+		l.s		$f1, constant_one($zero) # Let f1 be a constant 1.0
 		addi	$t8, $a0, 0			# t8 = Position for diagonal element
 		addi	$t9, $a1,   1		# t9 = number of steps to jump
 		add		$t9, $t9, $t9		# t9 *= 2 to correctify, 
@@ -57,12 +57,20 @@ loop_outermost:
 		#	1. get the value A[k][k] to f0
 		#	2. $f0 = 1/$f0
 		l.s		$f0, ($t8)			# f0 = A[k][k]
-		div.s	$f0, $f2, $f0		# f0 = 1/f0
+		div.s	$f0, $f1, $f0		# f0 = 1/f0
 		 
 		# We want to do A[k][j] = A[k][j] * inv, for i = k+1 .. N-1
 		#	1. Loop with t1=j, starting with j = k+1
-		#	2. $f0 = 1/$f0
+		#		practicaly this is $t1 = diag+1 = $t8+1
+		#	2. ($t1) = ($t1)*inv = ($t1)*$f0
+		#		practically first lw $t1 then sw later
+		#	3. stop loop
+		#		practically when $t1 = $a0
 		
+		
+loop_pivot_row_dividing:
+		
+		bne 
 		
 
 		add		$t8, $t8, $t9		# diag+=n+1; where t8 is diag and t9 is n+1
