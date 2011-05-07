@@ -49,6 +49,7 @@ eliminate:
 		nop
 		nop
 
+		l.s		$f2, constant_one($zero) # Let f2 be a constant 1
 		addi	$t8, $a0, 0			# t8 = Position for diagonal element
 		addi	$t9, $a1,   1		# t9 = number of steps to jump
 		add		$t9, $t9, $t9		# t9 *= 2 to correctify, 
@@ -65,9 +66,12 @@ loop_outermost:
 		# We want to do $f0 = 1/A[k][k], for that we need:
 		#	1. get the value A[k][k] to f0
 		#	2. $f0 = 1/$f0
-		l.d		$f0, ($t8)
-		div.d	$f0, $f0, $f0
+		l.s		$f0, ($t8)			# f0 = A[k][k]
+		div.s	$f0, $f2, $f0		# f0 = 1/f0
 		
+		# We want to do $f0 = 1/A[k][k], for that we need:
+		#	1. get the value A[k][k] to f0
+		#	2. $f0 = 1/$f0
 		
 		
 
@@ -826,5 +830,9 @@ matrix_24x24:
 		.float	 65.00 
 		.float	 24.00 
 		.float	 24.00 
+
+constant_one:
+		.float 1.0
+
 
 ### End of data segment
