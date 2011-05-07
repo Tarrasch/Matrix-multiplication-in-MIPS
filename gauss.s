@@ -34,7 +34,13 @@ eliminate:
 		nop
 		nop
 
-		l.s		$f2, constant_one($zero) # Let f2 be a constant 1
+		# We first initiate some variables,
+		# we want t0 to be A+n*n
+		mul		$t0, $a1, $a1
+		add		$t0, $a0, $t0
+
+
+		l.s		$f2, constant_one($zero) # Let f2 be a constant 1.0
 		addi	$t8, $a0, 0			# t8 = Position for diagonal element
 		addi	$t9, $a1,   1		# t9 = number of steps to jump
 		add		$t9, $t9, $t9		# t9 *= 2 to correctify, 
