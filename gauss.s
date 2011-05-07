@@ -27,21 +27,6 @@ eliminate:
 		addiu	$sp, $sp, -4		# allocate stack frame
 		sw		$ra, 0($sp)			# done saving registers
 		
-
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
 		nop
 		nop
 		nop
@@ -58,33 +43,25 @@ eliminate:
 loop_outermost:
 
 		nop
-		nop
-		nop
-		nop
-		nop
 
 		# We want to do $f0 = 1/A[k][k], for that we need:
 		#	1. get the value A[k][k] to f0
 		#	2. $f0 = 1/$f0
 		l.s		$f0, ($t8)			# f0 = A[k][k]
 		div.s	$f0, $f2, $f0		# f0 = 1/f0
-		
-		# We want to do $f0 = 1/A[k][k], for that we need:
-		#	1. get the value A[k][k] to f0
+		 
+		# We want to do A[k][j] = A[k][j] * inv, for i = k+1 .. N-1
+		#	1. Loop with t1=j, starting with j = k+1
 		#	2. $f0 = 1/$f0
 		
 		
 
 		add		$t8, $t8, $t9		# diag+=n+1; where t8 is diag and t9 is n+1
 		addi	$t2, $t2, 1			# k++; so the loop ever finishes
-		nop
-		nop
-		nop
-		nop
-		nop
 		
 		bne		$a1, $t2, loop_outermost		# jump back to outermost loop
 		nop
+
 		nop
 		nop
 		nop
