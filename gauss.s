@@ -37,9 +37,13 @@ loop_outermost:
 		nop
 		nop
 		nop
+
+		# We want to do $t3 = 1/A[k][k], for that we need:
+		#	1. get the value A[k][k] to t3
+		#	2. $t3 = 1/$t3
 		
 
-		addi	$t2, $t2, 1
+		addi	$t2, $t2, 1			# k++; so the loop ever finishes
 		nop
 		nop
 		nop
