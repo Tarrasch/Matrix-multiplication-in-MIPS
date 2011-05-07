@@ -27,10 +27,32 @@ eliminate:
 		addiu	$sp, $sp, -4		# allocate stack frame
 		sw		$ra, 0($sp)			# done saving registers
 		
-		##
-		## Implement eliminate here
-		## 
 
+
+		addi	$t2, $zero, 0		# k = 0, beginning of outermost loop
+loop_outermost:
+
+		nop
+		nop
+		nop
+		nop
+		nop
+		
+
+		addi	$t2, $t2, 1
+		nop
+		nop
+		nop
+		nop
+		nop
+		
+		bne		$a1, $t2, loop_outermost		# jump back to outermost loop
+		nop
+		nop
+		nop
+		nop
+		nop
+		
 		lw		$ra, 0($sp)			# done restoring registers
 		addiu	$sp, $sp, 4			# remove stack frame
 
