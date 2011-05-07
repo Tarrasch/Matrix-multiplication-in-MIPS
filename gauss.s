@@ -28,9 +28,31 @@ eliminate:
 		sw		$ra, 0($sp)			# done saving registers
 		
 
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
 
-		addi	$t8, $zero, 0		# t8 = Position for diagonal element
+		addi	$t8, $a0, 0			# t8 = Position for diagonal element
 		addi	$t9, $a1,   1		# t9 = number of steps to jump
+		add		$t9, $t9, $t9		# t9 *= 2 to correctify, 
+		add		$t9, $t9, $t9		# t9 *= 2 to correctify, to jump wordssteps
 		addi	$t2, $zero, 0		# k = 0, beginning of outermost loop
 loop_outermost:
 
@@ -40,14 +62,16 @@ loop_outermost:
 		nop
 		nop
 
-		# We want to do $t3 = 1/A[k][k], for that we need:
-		#	1. get the value A[k][k] to t3
-		#	2. $t3 = 1/$t3
-
+		# We want to do $f0 = 1/A[k][k], for that we need:
+		#	1. get the value A[k][k] to f0
+		#	2. $f0 = 1/$f0
+		l.d		$f0, ($t8)
+		div.d	$f0, $f0, $f0
 		
 		
+		
 
-		add		$t8, $t8, t9		# diag+=n+1; where t8 is diag and t9 is n+1
+		add		$t8, $t8, $t9		# diag+=n+1; where t8 is diag and t9 is n+1
 		addi	$t2, $t2, 1			# k++; so the loop ever finishes
 		nop
 		nop
@@ -61,6 +85,7 @@ loop_outermost:
 		nop
 		nop
 		nop
+
 		
 		lw		$ra, 0($sp)			# done restoring registers
 		addiu	$sp, $sp, 4			# remove stack frame
