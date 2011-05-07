@@ -4,7 +4,7 @@
 void eliminate(double **A, int N)
 {
    int i, j, k;
-   for (k=0; k < N; k++) {          /* loop over all diagonal (pivot)
+   for (k=0; k < N; k++) {          /* loop over all diagonal (pivot)     
                                        elements */
      for (j=k+1; j<N; j++) {        /* for all elements in pivot row
                                        and right of pivot element... */
