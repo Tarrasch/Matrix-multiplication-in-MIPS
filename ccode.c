@@ -1,4 +1,4 @@
-/*
+ /*
   * reduce matrix A to upper triangular form
   */
 void eliminate(double **A, int N)
@@ -8,7 +8,8 @@ void eliminate(double **A, int N)
    int k; // t2
    for (k=0; k < N; k++) {  
      
-     double inv = 1/A[k][k];
+     double inv = 1/A[k][k]; // t3
+     						 // 
      
      for (j=k+1; j<N; j++) {                            
        A[k][j] = A[k][j] * inv;
