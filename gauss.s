@@ -48,7 +48,8 @@ eliminate:
 		sub 	$t0, $t0, $t7
 
 
-		l.s		$f1, constant_one($zero) # Let f1 be a constant 1.0
+		l.s		$f0, constant_zero($zero)	# Let f0 be a constant 0.0
+		l.s		$f1, constant_one($zero)	# Let f1 be a constant 1.0
 		addi	$t8, $a0, 0			# t8 = Position for diagonal element
 		addi	$t9, $a1, 1			# t9 = number of steps to jump
 		sll		$t9, $t9, 2			# t9 *= 4, to correctify
@@ -59,24 +60,24 @@ loop_outermost:
 		# We do so a0 is the "line after" the current line
 		add		$a0, $a0, $t7		# a0+=4*n, this is important for loop to terminate
 		
-		# We want to do $f0 = 1/A[k][k], for that we need:
-		#	1. get the value A[k][k] to f0
-		#	2. $f0 = 1/$f0
-		l.s		$f0, ($t8)			# f0 = A[k][k]
-		div.s	$f0, $f1, $f0		# f0 = 1/f0
-		 
+		# We want to do $f2 = 1/A[k][k], for that we need:
+		#	1. get the value A[k][k] to f2
+		#	2. $f2 = 1/$f2
+		l.s		$f2, ($t8)			# f2 = A[k][k]
+		div.s	$f2, $f1, $f2		# f2 = 1/f2
+		
 		# We want to do A[k][j] = A[k][j] * inv, for i = k+1 .. N-1
 		#	1. Loop with t1=j, starting with j = k+1
 		#		practicaly this is $t1 = diag+1 = $t8+1
-		#	2. ($t1) = ($t1)*inv = ($t1)*$f0
+		#	2. ($t1) = ($t1)*inv = ($t1)*$f2
 		#		practically first lw $t1 then sw later
 		#	3. stop loop
 		#		practically when $t1 = $a0
 		addi	$t1, $t8, 4			# t1 = diag+1word
 loop_pivot_row_dividing:
-		l.s		$f2, ($t1)			# f2   <-- [t1]
-		mul.s	$f2, $f2, $f0		# f2   <-- f2 * inv
-		s.s		$f2, ($t1)			# [t1] <-- f2
+		l.s		$f3, ($t1)			# f2   <-- [t1]
+		mul.s	$f3, $f3, $f2		# f2   <-- f2 * inv
+		s.s		$f3, ($t1)			# [t1] <-- f2
 		addi	$t1, $t1,	4		# t1   <-- t1 + 4 
 		bne 	$a0, $t1,	loop_pivot_row_dividing # loop if not finished
 		nop
@@ -109,6 +110,7 @@ inner_big_loop:
 		bne		$t2, $a0, inner_big_loop	# loopa
 		addi	$t3, $t3, 4			# t3   <-- t3 + 4
 
+		s.s		$f0, ($t1)			# [t1] <-- zero
 		blt		$t1, $t0, outer_big_loop	# loop
 		add		$t1, $t1, $t7		# t1   <-- t1 + n*4 	# important for loop logic
 
@@ -869,6 +871,8 @@ matrix_24x24:
 		.float	 24.00 
 		.float	 24.00 
 
+constant_zero:
+		.float 0.0
 constant_one:
 		.float 1.0
 
