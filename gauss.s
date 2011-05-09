@@ -45,7 +45,6 @@ eliminate:
 		addi	$t9, $a1,   1		# t9 = number of steps to jump
 		add		$t9, $t9, $t9		# t9 *= 2 to correctify, 
 		add		$t9, $t9, $t9		# t9 *= 2 to correctify, to jump wordssteps
-		addi	$t2, $zero, 0		# k = 0, beginning of outermost loop
 loop_outermost:
 
 		nop
@@ -66,11 +65,14 @@ loop_outermost:
 		#		practically first lw $t1 then sw later
 		#	3. stop loop
 		#		practically when $t1 = $a0
-		
-		
 loop_pivot_row_dividing:
+		l.s		$f2, ($t1)
+		mul.s	$f2, $f2, $f0
+		s.s		$f2, ($t1)
 		
-		bne 
+		addi	$t1, $t1,	4
+		bne 	$a0, $t1,	loop_pivot_row_dividing
+		nop
 		
 
 		add		$t8, $t8, $t9		# diag+=n+1; where t8 is diag and t9 is n+1
