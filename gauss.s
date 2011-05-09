@@ -1,16 +1,16 @@
 ### Text segment
 		.text
 start:
-		la		$a0, matrix_4x4		# a0 = A (base address of matrix)
-		li		$a1, 4    		    # a1 = N (number of elements per row)
+		la		$a0, matrix_24x24		# a0 = A (base address of matrix)
+		li		$a1, 24    		    # a1 = N (number of elements per row)
 									# <debug>
-		jal 	print_matrix	    # print matrix before elimination
+#		jal 	print_matrix	    # print matrix before elimination
 		nop							# </debug>
 		jal 	eliminate			# triangularize matrix!
 		nop
-		la		$a0, matrix_4x4		# a0 = A (base address of matrix)
+		la		$a0, matrix_24x24		# a0 = A (base address of matrix)
 		nop							# <debug>
-		jal 	print_matrix		# print matrix after elimination
+#		jal 	print_matrix		# print matrix after elimination
 		nop							# </debug>
 		jal 	exit
 
