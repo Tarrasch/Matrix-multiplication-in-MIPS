@@ -97,6 +97,8 @@ outer_big_loop:
 		l.s		$f2, ($t1)			# f2   <-- [t1]
 		addi	$t2, $t8, 4			# t2   <-- diag+4
 		addi	$t3, $t1, 4			# t3   <-- t1+4
+		nop
+		nop
 inner_big_loop:
 		l.s		$f3, ($t2)			# f3   <-- [t2]
 		l.s		$f4, ($t3)			# f4   <-- [t3]
@@ -108,7 +110,7 @@ inner_big_loop:
 		addi	$t3, $t3, 4			# t3   <-- t3 + 4
 
 		blt		$t1, $t0, outer_big_loop	# loop
-		add		$t1, $t1, $t7				# important for loop logic
+		add		$t1, $t1, $t7		# t1   <-- t1 + n*4 	# important for loop logic
 
 		#### END BIG LOOP
 		
