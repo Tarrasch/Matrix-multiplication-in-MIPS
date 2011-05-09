@@ -7,6 +7,8 @@ start:
 		jal 	print_matrix	    # print matrix before elimination
 		nop							# </debug>
 		jal 	eliminate			# triangularize matrix!
+		nop
+		la		$a0, matrix_4x4		# a0 = A (base address of matrix)
 		nop							# <debug>
 		jal 	print_matrix		# print matrix after elimination
 		nop							# </debug>
@@ -43,12 +45,13 @@ eliminate:
 		mul		$t0, $a1, $a1
 		sll 	$t0, $t0, 2
 		add		$t0, $a0, $t0
+		sub 	$t0, $t0, $t7
 
 
 		l.s		$f1, constant_one($zero) # Let f1 be a constant 1.0
 		addi	$t8, $a0, 0			# t8 = Position for diagonal element
-		addi	$t9, $a1,   1		# t9 = number of steps to jump
-		sll		$t9, $t9, 4			# t9 *= 4, to correctify
+		addi	$t9, $a1, 1			# t9 = number of steps to jump
+		sll		$t9, $t9, 2			# t9 *= 4, to correctify
 loop_outermost:
 
 		nop
