@@ -77,16 +77,34 @@ loop_pivot_row_dividing:
 		l.s		$f2, ($t1)			# f2   <-- [t1]
 		mul.s	$f2, $f2, $f0		# f2   <-- f2 * inv
 		s.s		$f2, ($t1)			# [t1] <-- f2
-		
-		addi	$t1, $t1,	4
-		bne 	$a0, $t1,	loop_pivot_row_dividing
+		addi	$t1, $t1,	4		# t1   <-- t1 + 4 
+		bne 	$a0, $t1,	loop_pivot_row_dividing # loop if not finished
 		nop
+
+
+		# We want to do big loop
+		#	1. In preperation we set t1 to be our ROW-looper
+		#	2. In the outer loop we extract the leftelement, that is $f2=[t1]
+		#		We also initialize the column-looper t2 and body-looper t3
+		#		This loop terminates when $t1 HAVE BEEN t0, remember t0 is a line above last!!!!
+		#	3. In the body we must increment t2 and t3.
+		#		use $f3=[t2] and $f4=[t3]. Use $f5=$f2*$f3 as intermediete for $f4-=$f5
+		#		Terminates when t2 reaches a0
+		#	3. When Inner loop is terminated, we must set [t1] = 0.0
+		#		practically when $t1 = $a0
+outer_big_loop:
+
+
+inner_big_loop:
 		
+		# Pre-outerloop updates
 		s.s		$f1, ($t8)			# set [diag]=1 
 		add		$t8, $t8, $t9		# diag+=n+1; where t8 is diag and t9 is n+1		
 		bne		$a0, $t0, loop_outermost		# jump back to outermost loop
 		nop
 		s.s		$f1, ($t8)			# set [diag]=1, for the last time
+
+		# END OF ELIMINATION, kinda
 
 		nop
 		nop
