@@ -74,9 +74,9 @@ loop_outermost:
 		#		practically when $t1 = $a0
 		addi	$t1, $t8, 4			# t1 = diag+1word
 loop_pivot_row_dividing:
-		l.s		$f2, ($t1)
-		mul.s	$f2, $f2, $f0
-		s.s		$f2, ($t1)
+		l.s		$f2, ($t1)			# f2   <-- [t1]
+		mul.s	$f2, $f2, $f0		# f2   <-- f2 * inv
+		s.s		$f2, ($t1)			# [t1] <-- f2
 		
 		addi	$t1, $t1,	4
 		bne 	$a0, $t1,	loop_pivot_row_dividing
@@ -86,7 +86,7 @@ loop_pivot_row_dividing:
 		add		$t8, $t8, $t9		# diag+=n+1; where t8 is diag and t9 is n+1		
 		bne		$a0, $t0, loop_outermost		# jump back to outermost loop
 		nop
-		s.s		$f1, ($t8)			# set [diag]=1 
+		s.s		$f1, ($t8)			# set [diag]=1, for the last time
 
 		nop
 		nop
