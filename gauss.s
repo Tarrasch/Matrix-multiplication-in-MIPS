@@ -1,16 +1,16 @@
 ### Text segment
 		.text
 start:
-		la		$a0, matrix_4x4		# a0 = A (base address of matrix)
-		li		$a1, 4    		    # a1 = N (number of elements per row)
+		la		$a0, matrix_24x24		# a0 = A (base address of matrix)
+		li		$a1, 24    		    # a1 = N (number of elements per row)
 									# <debug>
-		jal 	print_matrix	    # print matrix before elimination
+#		jal 	print_matrix	    # print matrix before elimination
 		nop							# </debug>
 		jal 	eliminate			# triangularize matrix!
 		nop
-		la		$a0, matrix_4x4		# a0 = A (base address of matrix)
+		la		$a0, matrix_24x24		# a0 = A (base address of matrix)
 		nop							# <debug>
-		jal 	print_matrix		# print matrix after elimination
+#		jal 	print_matrix		# print matrix after elimination
 		nop							# </debug>
 		jal 	exit
 
@@ -28,13 +28,7 @@ eliminate:
 		# If necessary, create stack frame, and save return address from ra
 		addiu	$sp, $sp, -4		# allocate stack frame
 		sw		$ra, 0($sp)			# done saving registers
-		
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
+
 
 		# let t7 = n*4, 
 		# number of bytes we must jump ahead to get to next line
@@ -54,8 +48,6 @@ eliminate:
 		addi	$t9, $a1, 1			# t9 = number of steps to jump
 		sll		$t9, $t9, 2			# t9 *= 4, to correctify
 loop_outermost:
-
-		nop
 		
 		# We do so a0 is the "line after" the current line
 		add		$a0, $a0, $t7		# a0+=4*n, this is important for loop to terminate
@@ -98,8 +90,6 @@ outer_big_loop:
 		l.s		$f2, ($t1)			# f2   <-- [t1]
 		addi	$t2, $t8, 4			# t2   <-- diag+4
 		addi	$t3, $t1, 4			# t3   <-- t1+4
-		nop
-		nop
 inner_big_loop:
 		l.s		$f3, ($t2)			# f3   <-- [t2]
 		l.s		$f4, ($t3)			# f4   <-- [t3]
@@ -124,12 +114,6 @@ inner_big_loop:
 		s.s		$f1, ($t8)			# set [diag]=1, for the last time
 
 		# END OF ELIMINATION, kinda
-
-		nop
-		nop
-		nop
-		nop
-
 		
 		lw		$ra, 0($sp)			# done restoring registers
 		addiu	$sp, $sp, 4			# remove stack frame
