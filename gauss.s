@@ -39,8 +39,9 @@ eliminate:
 		muli	$t7, $a1, 4
 	
 		# We first initiate some variables,
-		# we want t0 to be A+n*n
+		# we want t0 to be A+4*n*n
 		mul		$t0, $a1, $a1
+		muli	$t0, $t0, 4
 		add		$t0, $a0, $t0
 
 
