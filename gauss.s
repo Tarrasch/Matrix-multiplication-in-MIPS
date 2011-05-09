@@ -48,8 +48,7 @@ eliminate:
 		l.s		$f1, constant_one($zero) # Let f1 be a constant 1.0
 		addi	$t8, $a0, 0			# t8 = Position for diagonal element
 		addi	$t9, $a1,   1		# t9 = number of steps to jump
-		add		$t9, $t9, $t9		# t9 *= 2 to correctify, 
-		add		$t9, $t9, $t9		# t9 *= 2 to correctify, to jump wordssteps
+		sll		$t9, $t9, 4			# t9 *= 4, to correctify
 loop_outermost:
 
 		nop
