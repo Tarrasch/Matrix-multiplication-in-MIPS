@@ -69,10 +69,9 @@ loop_outermost:
 loop_pivot_row_dividing:
 		l.s		$f3, ($t1)			# f2   <-- [t1]
 		mul.s	$f3, $f3, $f2		# f2   <-- f2 * inv
-		s.s		$f3, ($t1)			# [t1] <-- f2
 		addi	$t1, $t1,	4		# t1   <-- t1 + 4 
 		bne 	$a0, $t1,	loop_pivot_row_dividing # loop if not finished
-		nop
+		s.s		$f3, -4($t1)		# [t1] <-- f2
 
 
 		# We want to do big loop
