@@ -36,12 +36,12 @@ eliminate:
 
 		# let t7 = n*4, 
 		# number of bytes we must jump ahead to get to next line
-		muli	$t7, $a1, 4
+		sll		$t7, $a1, 2
 	
 		# We first initiate some variables,
 		# we want t0 to be A+4*n*n
 		mul		$t0, $a1, $a1
-		muli	$t0, $t0, 4
+		sll 	$t0, $t0, 2
 		add		$t0, $a0, $t0
 
 
@@ -55,7 +55,7 @@ loop_outermost:
 		nop
 		
 		# We do so a0 is the "line after" the current line
-		add		$a0, $a0, $t7		# a0+=n, this is important for loop to terminate
+		add		$a0, $a0, $t7		# a0+=4*n, this is important for loop to terminate
 		
 		# We want to do $f0 = 1/A[k][k], for that we need:
 		#	1. get the value A[k][k] to f0
