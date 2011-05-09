@@ -86,7 +86,9 @@ loop_pivot_row_dividing:
 		add		$t8, $t8, $t9		# diag+=n+1; where t8 is diag and t9 is n+1		
 		bne		$a0, $t0, loop_outermost		# jump back to outermost loop
 		
-		
+		#######################################################################
+		#			JONAS was here lolol
+		#######################################################################
 		nop
 
 		nop
