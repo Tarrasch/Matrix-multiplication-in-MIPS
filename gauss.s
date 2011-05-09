@@ -34,6 +34,10 @@ eliminate:
 		nop
 		nop
 
+		# let t7 = n*4, 
+		# number of bytes we must jump ahead to get to next line
+		muli	$t7, $a1, 4
+	
 		# We first initiate some variables,
 		# we want t0 to be A+n*n
 		mul		$t0, $a1, $a1
@@ -65,6 +69,7 @@ loop_outermost:
 		#		practically first lw $t1 then sw later
 		#	3. stop loop
 		#		practically when $t1 = $a0
+		addi	$t1, $t8, 4			# t1 = diag+1word
 loop_pivot_row_dividing:
 		l.s		$f2, ($t1)
 		mul.s	$f2, $f2, $f0
