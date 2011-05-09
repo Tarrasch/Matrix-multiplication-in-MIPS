@@ -55,7 +55,7 @@ loop_outermost:
 		nop
 		
 		# We do so a0 is the "line after" the current line
-		add		$a0, $a0, $a1		# a0+=n, this is important for loop to terminate
+		add		$a0, $a0, $t7		# a0+=n, this is important for loop to terminate
 		
 		# We want to do $f0 = 1/A[k][k], for that we need:
 		#	1. get the value A[k][k] to f0
