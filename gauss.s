@@ -92,10 +92,25 @@ loop_pivot_row_dividing:
 		#		Terminates when t2 reaches a0
 		#	3. When Inner loop is terminated, we must set [t1] = 0.0
 		#		practically when $t1 = $a0
+		add		$t1, $t8, $t7		# t1   <-- diag+n*4
 outer_big_loop:
-
-
+		l.s		$f2, ($t1)			# f2   <-- [t1]
+		addi	$t2, $t8, 4			# t2   <-- diag+4
+		addi	$t3, $t1, 4			# t3   <-- t1+4
 inner_big_loop:
+		l.s		$f3, ($t2)			# f3   <-- [t2]
+		l.s		$f4, ($t3)			# f4   <-- [t3]
+		mul.s	$f5, $f2, $f3		# f5   <-- f2*f3
+		sub.s	$f4, $f4, $f5		# f4   <-- f4-f5
+		s.s		$f4, ($t3)			# [t3] <-- f4
+		addi	$t2, $t2, 4			# t2   <-- t2 + 4
+		bne		$t2, $a0, inner_big_loop	# loopa
+		addi	$t3, $t3, 4			# t3   <-- t3 + 4
+
+		blt		$t1, $t0, outer_big_loop	# loop
+		add		$t1, $t1, $t7				# important for loop logic
+
+		#### END BIG LOOP
 		
 		# Pre-outerloop updates
 		s.s		$f1, ($t8)			# set [diag]=1 
