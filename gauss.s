@@ -82,7 +82,7 @@ loop_pivot_row_dividing:
 		bne 	$a0, $t1,	loop_pivot_row_dividing
 		nop
 		
-		sw		$f1, ($t8)			# set [diag]=1 
+		s.s		$f1, ($t8)			# set [diag]=1 
 		add		$t8, $t8, $t9		# diag+=n+1; where t8 is diag and t9 is n+1		
 		bne		$a0, $t0, loop_outermost		# jump back to outermost loop
 		
