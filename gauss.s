@@ -66,12 +66,13 @@ loop_outermost:
 		#	3. stop loop
 		#		practically when $t1 = $a0
 		addi	$t1, $t8, 4			# t1 = diag+1word
+		l.s		$f3, ($t1)			# f2   <-- [t1]		
 loop_pivot_row_dividing:
-		l.s		$f3, ($t1)			# f2   <-- [t1]
 		mul.s	$f3, $f3, $f2		# f2   <-- f2 * inv
+		s.s		$f3, ($t1)			# [t1] <-- f2
 		addi	$t1, $t1,	4		# t1   <-- t1 + 4 
 		bne 	$a0, $t1,	loop_pivot_row_dividing # loop if not finished
-		s.s		$f3, -4($t1)		# [t1] <-- f2
+		l.s		$f3, ($t1)			# f2   <-- [t1]
 
 
 		# We want to do big loop
