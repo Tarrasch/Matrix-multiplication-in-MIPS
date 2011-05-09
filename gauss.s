@@ -1,16 +1,16 @@
 ### Text segment
 		.text
 start:
-		la		$a0, matrix_24x24		# a0 = A (base address of matrix)
-		li		$a1, 24    		    # a1 = N (number of elements per row)
+		la		$a0, matrix_4x4		# a0 = A (base address of matrix)
+		li		$a1, 4    		    # a1 = N (number of elements per row)
 									# <debug>
-#		jal 	print_matrix	    # print matrix before elimination
+		jal 	print_matrix	    # print matrix before elimination
 		nop							# </debug>
 		jal 	eliminate			# triangularize matrix!
 		nop
-		la		$a0, matrix_24x24		# a0 = A (base address of matrix)
+		la		$a0, matrix_4x4		# a0 = A (base address of matrix)
 		nop							# <debug>
-#		jal 	print_matrix		# print matrix after elimination
+		jal 	print_matrix		# print matrix after elimination
 		nop							# </debug>
 		jal 	exit
 
@@ -47,10 +47,10 @@ eliminate:
 		addi	$t8, $a0, 0			# t8 = Position for diagonal element
 		addi	$t9, $a1, 1			# t9 = number of steps to jump
 		sll		$t9, $t9, 2			# t9 *= 4, to correctify
-loop_outermost:
 		
 		# We do so a0 is the "line after" the current line
 		add		$a0, $a0, $t7		# a0+=4*n, this is important for loop to terminate
+loop_outermost:
 		
 		# We want to do $f2 = 1/A[k][k], for that we need:
 		#	1. get the value A[k][k] to f2
@@ -110,7 +110,8 @@ inner_big_loop:
 		s.s		$f1, ($t8)			# set [diag]=1 
 		add		$t8, $t8, $t9		# diag+=n+1; where t8 is diag and t9 is n+1		
 		bne		$a0, $t0, loop_outermost		# jump back to outermost loop
-		nop
+		add		$a0, $a0, $t7		# a0+=4*n, this is important for loop to terminate
+
 		s.s		$f1, ($t8)			# set [diag]=1, for the last time
 
 		# END OF ELIMINATION, kinda
