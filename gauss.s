@@ -35,6 +35,8 @@ eliminate:
 		sll 	$t0, $t0, 2
 		add		$t0, $a0, $t0
 		sub 	$t0, $t0, $t7
+		sub 	$t4, $t0, $t7 # Let t4 be the position we should stop at
+		sub 	$t0, $t0, $t7 # test temp
 
 
 		l.s		$f0, constant_zero($zero)	# Let f0 be a constant 0.0
@@ -96,14 +98,15 @@ inner_big_loop:
 		addi	$t3, $t3, 4			# t3   <-- t3 + 4
 
 		s.s		$f0, ($t1)			# [t1] <-- zero
-		blt		$t1, $t0, outer_big_loop	# loop
+		bne		$t1, $t4, outer_big_loop	# loop
 		add		$t1, $t1, $t7		# t1   <-- t1 + n*4 	# important for loop logic
 
-		#### END BIG LOOP
+		#### END INNER BIG LOOP
 		
 		# Pre-outerloop updates
 		s.s		$f1, ($t8)			# set [diag]=1 
 		add		$t8, $t8, $t9		# diag+=n+1; where t8 is diag and t9 is n+1		
+		addi	$t4, $t4, 4			# t4 = next square, that is where big-loop should end at
 		bne		$a0, $t0, loop_outermost		# jump back to outermost loop
 		add		$a0, $a0, $t7		# a0+=4*n, this is important for loop to terminate
 
