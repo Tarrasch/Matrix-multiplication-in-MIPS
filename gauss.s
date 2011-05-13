@@ -110,9 +110,18 @@ inner_big_loop:
 		bne		$a0, $t0, loop_outermost		# jump back to outermost loop
 		add		$a0, $a0, $t7		# a0+=4*n, this is important for loop to terminate
 
-		s.s		$f1, ($t8)			# set [diag]=1, for the last time
+		#### END OUTERMOST LOOP
 
-		# END OF ELIMINATION, kinda
+		# First we just fix A[n-1][n]
+		l.s		$f2, ($t8)			# f2       <-- [diag]		
+		l.s		$f3, 4($t8)			# f3       <-- [diag+4]		
+		div.s	$f3, $f3, $f2		# f3       <-- f3/f2		
+		s.s		$f3, 4($t8)			# [diag+4] <-- f3
+		s.s		$f1, ($t8)			# set [diag]=1, for the second last time
+
+		# Now lets fix last row
+
+		# END OF ELIMINATION, ABOUT TO RETURN
 
 		jr		$ra					# return from subroutine
 		nop							# this is the delay slot associated with all types of jumps
