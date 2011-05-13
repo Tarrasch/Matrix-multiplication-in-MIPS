@@ -1,16 +1,16 @@
 ### Text segment
 		.text
 start:
-		la		$a0, matrix_4x4		# a0 = A (base address of matrix)
-		li		$a1, 4    		    # a1 = N (number of elements per row)
+		la		$a0, matrix_24x24		# a0 = A (base address of matrix)
+		li		$a1, 24    		    # a1 = N (number of elements per row)
 									# <debug>
-		jal 	print_matrix	    # print matrix before elimination
-		nop							# </debug>
+#		jal 	print_matrix	    # print matrix before elimination
+#		nop							# </debug>
 		jal 	eliminate			# triangularize matrix!
 		nop
-		la		$a0, matrix_4x4		# a0 = A (base address of matrix)
-		nop							# <debug>
-		jal 	print_matrix		# print matrix after elimination
+#		la		$a0, matrix_4x4		# a0 = A (base address of matrix)
+#		nop							# <debug>
+#		jal 	print_matrix		# print matrix after elimination
 		nop							# </debug>
 		jal 	exit
 
@@ -110,9 +110,28 @@ inner_big_loop:
 		bne		$a0, $t0, loop_outermost		# jump back to outermost loop
 		add		$a0, $a0, $t7		# a0+=4*n, this is important for loop to terminate
 
+		#### END OUTERMOST LOOP
+
+		# First we just fix A[n-1][n]
+		addi	$t1, $t8, 4			# t1       <-- diag+4, this is also user later!
+		l.s		$f2, ($t8)			# f2       <-- [diag]		
+		l.s		$f3, ($t1)			# f3       <-- [t1]
+		div.s	$f3, $f3, $f2		# f3       <-- f3/f2		
+		s.s		$f3, ($t1)			# [t1]     <-- f3
+		s.s		$f1, ($t8)			# set [diag]=1, for the second last time
+
+		# Now lets fix last row, lets loop with t1
+		add		$t8, $t8, $t9		# diag+=n+1; where t8 is diag and t9 is n+1				
+loop_final_row:
+		addi	$t1, $t1, 4			# t1       <-- t1+4
+		bne		$t1, $t8, loop_final_row   # loop unless reached last diag ([n][n])
+		s.s		$f0, ($t1)			# [t1]	   <-- 0
+
+		# Now lets finally set [n][n]
 		s.s		$f1, ($t8)			# set [diag]=1, for the last time
 
-		# END OF ELIMINATION, kinda
+
+		# END OF ELIMINATION, ABOUT TO RETURN
 
 		jr		$ra					# return from subroutine
 		nop							# this is the delay slot associated with all types of jumps
