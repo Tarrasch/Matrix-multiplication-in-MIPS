@@ -228,6 +228,11 @@ loop_s0:
 
 ### Data segment 
 		.data
+
+constant_zero:
+		.float 0.0
+constant_one:
+		.float 1.0
 		
 ### String constants
 spaces:
@@ -869,11 +874,6 @@ matrix_24x24:
 		.float	 65.00 
 		.float	 24.00 
 		.float	 24.00 
-
-constant_zero:
-		.float 0.0
-constant_one:
-		.float 1.0
 
 
 ### End of data segment
