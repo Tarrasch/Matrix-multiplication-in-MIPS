@@ -4,8 +4,8 @@
 \usepackage{lmodern}
 \usepackage{hyperref}
 
-\title{AlphaBiscuit - Image Recognition of Letter Biscuits}
-\author{Arash Rouhani}
+\title{Monetarily efficient Guass Elminiation given crappy hardware}
+\author{Arash Rouhani and Jonas Ängeslevä}
 
 \begin{document}
 
@@ -16,7 +16,14 @@
 \end{abstract}
 
 \section{Cmoputer System}
+We have written a gauss elimination program for MIPS assembler. Details below.
 \subsection{hardware}
+The MIPS processor have 5 pipe lines stages, seperate I and D cache, a write buffer and two coprocessors.
+The caches can be in sizes of 128, 256 and 512 bytes, and are using LRU replacement policy and Write Back replacement policy.
+The Least Recently Used is a replacement policy, where the element in the set that was least recently used is replaced, if the cache is full. Note that this only maters in N-way caches (where N>1).
+The Write Back writing policy means that when writing to the memory, we don't actually write to the memory if the memory is cached. 
+
 \subsection{software}
+
 
 \end{document}
