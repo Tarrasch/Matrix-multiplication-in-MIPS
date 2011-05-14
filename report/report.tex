@@ -13,10 +13,6 @@
 
 \maketitle
 
-\begin{abstract}
-
-\end{abstract}
-
 \section{Computer System}
 We have written a gauss elimination program for MIPS assembler, the program is optimized for the hardware. Details below.
 \subsection{hardware}
@@ -41,7 +37,7 @@ Changing the parameters sometimes give a significant effect, and sometimes it do
 \item Buffer size 1 is as fast as size 8 measured in clock cycles, but 1 is faster than 0.
 \item The expensive memory outperforms the cheaper one from a price*performance standpoint.
 In the rest of this subchapter we'll explain why we observe these extremities.
-
+\end{itemize}
 The I cache don't need to be big because the instructions are all close together, the whole content of the outermost loop definetly fits in 32 words, and we don't call subroutines, so the program pointer never leaves that scope.
 
 One way associativity is bad because it doesn't play well with the data access patter.
