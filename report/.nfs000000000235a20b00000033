@@ -5,8 +5,33 @@
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{rotating}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{mips}
 
-\title{Monetarily efficient Guass Elminiation given crappy hardware}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=[mips]Assembler,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true
+  tabsize=3
+}
+
+\title{Monetarily efficient Gauss Elimination}
 \author{Arash Rouhani and Jonas Ängeslevä}
 
 \begin{document}
@@ -27,6 +52,8 @@ This assumption makes our code to actually only work on invertable matrices.
 
 For optimization, the code does use delayed branching slots, does not do indexing or call any subroutines. 
 Furthermore it does not violate the MIPS conventions for subroutines, it however mutates a0, so the test program must be corrected accordingly.
+
+
 \section{Configurations}
 There are many ways to configure the hardware. We have experimentally tested and tabled some experiments, the parameters have been chosen to gradually try to increase the price*performence value, that is, we have used a \emph{greedily optimizing} method for parameter refining.
 
@@ -53,11 +80,17 @@ Most writes are directly to cache memory rather than misses, so writing to real 
 Reading from real memory however happens often, and that is why the expensive memory pays off.
 This raises the question why it doesn't help to have a write buffer if memory interaction is common.
 The reason is that most writes are to a memory location we've just read from, and therfor it is cached already.
+\subsection{Best configuration}
+The best condfiguration for I-cache uses 8 word block size, has 4 blocks and uses direct-mapping.
+The D-cache uses 2-way mapping, has a block size of 8 words and 8 blocks. Withy these hardware choices the elimination takes only
+72469 cycles and costs 2415.63 \µSC\$.
 
 %\includegraphics[width=210mm,height=297mm,angle=270]{table.png}  
 \begin{center}
 \includegraphics[width=200mm,angle=270]{table.png}
 \end{center}
+\section{Appendix}
+\subsection{Code}
 \begin{lstlisting}
 ################################################################################
 # eliminate - Triangularize matrix.

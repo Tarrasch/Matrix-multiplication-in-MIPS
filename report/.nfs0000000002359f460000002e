@@ -40,12 +40,12 @@
 
 \section{Computer System}
 We have written a gauss elimination program for MIPS assembler, the program is optimized for the hardware. Details below.
-\subsection{Hardware}
+\subsection{hardware}
 The MIPS processor have 5 pipe lines stages, seperate I and D cache, a write buffer and two coprocessors.
 The caches can be in sizes of 128, 256 and 512 bytes, and are using LRU replacement policy and Write Back replacement policy.
 The Least Recently Used is a replacement policy, where the element in the set that was least recently used is replaced, if the cache is full. Note that this only maters in N-way caches (where N>1).
 The Write Back writing policy means that when writing to the memory, we don't actually write to the memory if the memory is cached. 
-\subsection{Software}
+\subsection{software}
 The algorithm used for the elimination is the one suggested.
 Only some minor optimizations have been at an algorithmical level. We do not unncessisarily loop at the last row (it's always 0 0 ... 0 0 1).
 This assumption makes our code to actually only work on invertable matrices.
@@ -63,7 +63,7 @@ Changing the parameters sometimes give a significant effect, and sometimes it do
 \item 2-way associativity is superior. It outperforms 4 also in clock cycles.
 \item Buffer size 1 is as fast as size 8 measured in clock cycles, but 1 is faster than 0.
 \item The expensive memory outperforms the cheaper one from a price*performance standpoint.
-In the rest of this section we'll explain why we observe these extremities.
+In the rest of this subchapter we'll explain why we observe these extremities.
 \end{itemize}
 The I cache don't need to be big because the instructions are all close together, the whole content of the outermost loop definetly fits in 32 words, and we don't call subroutines, so the program pointer never leaves that scope.
 
@@ -82,11 +82,8 @@ This raises the question why it doesn't help to have a write buffer if memory in
 The reason is that most writes are to a memory location we've just read from, and therfor it is cached already.
 \subsection{Best configuration}
 The best condfiguration for I-cache uses 8 word block size, has 4 blocks and uses direct-mapping.
-The D-cache uses 2-way mapping, has a block size of 8 words and 8 blocks.
-We used type-2 memory without a write-buffer. 
-Our cache configurations push down the clock-cycle frequency to 90Mhz.
-With these hardware choices the elimination takes only
-72469 cycles and costs 2415.63 $\mu$SC\$.
+The D-cache uses 2-way mapping, has a block size of 8 words and 8 blocks. Withy these hardware choices the elimination takes only
+72469 cycles and costs 2415.63µSC$.
 
 %\includegraphics[width=210mm,height=297mm,angle=270]{table.png}  
 \begin{center}
